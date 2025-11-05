@@ -23,9 +23,12 @@
 
 
 == Version History ==
-31/10/2025 - 0.02 - Adjusted Blynk events to new log function. Included utils.h
+04/11/2025 - 0.0.3 - Moved project to VSCode+PlatformIO to allow test without hardware with Unity.
+                     Addedd <Arduino.h> on top of file to maximize compilation success. Using now
+                     a new versioning number schema (Major.Minor.Patch)
+31/10/2025 - 0.0.2 - Adjusted Blynk events to new log function. Included utils.h
                     Added checkRtcOsf() to deal with power lost
-31/10/2025 - 0.01 - First installment based on code created by Gemini AI (Google)
+31/10/2025 - 0.0.1 - First installment based on code created by Gemini AI (Google)
 
 == Project file structure ==
 main.ino          - Main program with setup parameters and loop functions
@@ -41,15 +44,20 @@ hardware_manager  - Deal with all physical buttons in the project
 actuators_manager - Deal with all pump e actuator hardware in the system
 tpa_manager       - Coordinate the partial water change (in portuguese TPA ou troca parcial de água)
 tpa_reposition    - Control return of water volume
+blynk_interface.h - Blynk related functions and handlers   
+sensors_interface.h - Mocks for OneWire and DallasTemperature for unit testing
+rtc_interface.h   - RTC interface abstraction for unit testing
+timelib_interface.h - Mocks for TimeLib for unit testing
 
 */
-
+//#include <Arduino.h>  // Para manter compatibilidade com PlatformIO
 #include "config.h"
 #include "global.h"
 #include "utils.h"
+#include "blynk_interface.h"
+#include "RTC_interface.h"
+#include "timelib_interface.h"
 
-// Define o objeto RTC (global, extern em global.h)
-RTC_DS3231 rtc;
 
 // --- FUNÇÕES GERAIS DE HORA ---
 

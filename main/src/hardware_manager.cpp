@@ -21,10 +21,13 @@
 
 
 == Version History ==
-02/11/2025 - 0.03 - Re-factoring code to use Buttons2 library
-02/11/2025 - 0.02 - Re-factoring code to know use a page button, and combination of
+04/11/2025 - 0.0.4 - Moved project to VSCode+PlatformIO to allow test without hardware with Unity.
+                     Addedd <Arduino.h> on top of file to maximize compilation success. Using now
+                     a new versioning number schema (Major.Minor.Patch)
+02/11/2025 - 0.0.3 - Re-factoring code to use Buttons2 library
+02/11/2025 - 0.0.2 - Re-factoring code to know use a page button, and combination of
                     short, long press for several inputs and actions
-01/11/2025 - 0.01 - First installment based on code created by Gemini AI (Google)
+01/11/2025 - 0.0.1 - First installment based on code created by Gemini AI (Google)
 
 == Project file structure ==
 main.ino          - Main program with setup parameters and loop functions
@@ -40,11 +43,18 @@ hardware_manager  - (this file) Deal with all physical buttons in the project
 actuators_manager - Deal with all pump e actuator hardware in the system
 tpa_manager       - Coordinate the partial water change (in portuguese TPA ou troca parcial de água)
 tpa_reposition    - Control return of water volume
+blynk_interface.h - Blynk related functions and handlers   
+sensors_interface.h - Mocks for OneWire and DallasTemperature for unit testing
+rtc_interface.h   - RTC interface abstraction for unit testing
+timelib_interface.h - Mocks for TimeLib for unit testing
 
 */
+
+#include <Arduino.h>  // Para manter compatibilidade com PlatformIO
 #include "config.h"
 #include "global.h"
 #include "utils.h"
+#include "blynk_interface.h"
 
 // --- DECLARAÇÃO DE OBJETOS Button2 (Estas deveriam ser movidas para global.h) ---
 // Estes objetos gerenciam o estado de cada botão físico

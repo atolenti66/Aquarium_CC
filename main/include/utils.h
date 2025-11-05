@@ -39,10 +39,6 @@ hardware_manager  - Deal with all physical buttons in the project
 actuators_manager - Deal with all pump e actuator hardware in the system
 tpa_manager       - Coordinate the partial water change (in portuguese TPA ou troca parcial de água)
 tpa_reposition    - Control return of water volume
-blynk_interface.h - Blynk related functions and handlers   
-sensors_interface.h - Mocks for OneWire and DallasTemperature for unit testing
-rtc_interface.h   - RTC interface abstraction for unit testing
-timelib_interface.h - Mocks for TimeLib for unit testing
 
 */
 
@@ -68,7 +64,6 @@ float readPH();
 void checkPhAlert(float currentPh);
 void executePhCalibration();  // Faz a calibração do sensor de pH
 void resetSensorData();  //Reset de Temperatura e pH para zero
-void handlePhCalibration(int buttonState);
 
 // --- Protótipos de Funções de Configuração/Persistência (Definidas em config_manager.ino) ---
 void setupConfigManager();

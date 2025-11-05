@@ -40,10 +40,6 @@ hardware_manager  - Deal with all physical buttons in the project
 actuators_manager - Deal with all pump e actuator hardware in the system
 tpa_manager       - Coordinate the partial water change (in portuguese TPA ou troca parcial de água)
 tpa_reposition    - Control return of water volume
-blynk_interface.h - Blynk related functions and handlers   
-sensors_interface.h - Mocks for OneWire and DallasTemperature for unit testing
-rtc_interface.h   - RTC interface abstraction for unit testing
-timelib_interface.h - Mocks for TimeLib for unit testing
 
 */
 
@@ -51,11 +47,11 @@ timelib_interface.h - Mocks for TimeLib for unit testing
 
 // --- Bibliotecas usadas ---
 #include <WiFi.h>                 // Principalmente utilizada em main.ino
-// #include <BlynkSimpleEsp32.h>     // Mantemos o Blynk, mas só para comunicação IoT. Utilizada em todos os módulos
-// #include <OneWire.h>              // Usada em sensors.ino
-// #include <DallasTemperature.h>    // Usada em sensors.ino
+#include <BlynkSimpleEsp32.h>     // Mantemos o Blynk, mas só para comunicação IoT. Utilizada em todos os módulos
+#include <OneWire.h>              // Usada em sensors.ino
+#include <DallasTemperature.h>    // Usada em sensors.ino
 //#include <DS3232RTC>              // RTC DS3232 Lib from Jack Christensen
-// #include <RTClib.h>               // Utilizada para comunicação com módulo RTC. Principalmente utilizada em rtc_time.ino
+#include <RTClib.h>               // Utilizada para comunicação com módulo RTC. Principalmente utilizada em rtc_time.ino
 #include <Ticker.h>               // Utilizada para efetuar o schedule de funções de coletas de dados. Utilizada em main.ino
 #include <time.h>                 // Adicione esta biblioteca para o NTP. Utilizada em rtc_time.ino
 #include <TimeLib.h>              // Para declarar as funções hour(), minute() e second()

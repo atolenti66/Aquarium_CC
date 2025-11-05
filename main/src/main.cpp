@@ -46,10 +46,6 @@ hardware_manager  - Deal with all physical buttons in the project
 actuators_manager - Deal with all pump e actuator hardware in the system
 tpa_manager       - Coordinate the partial water change (in portuguese TPA ou troca parcial de água)
 tpa_reposition    - Control return of water volume
-blynk_interface.h - Blynk related functions and handlers   
-sensors_interface.h - Mocks for OneWire and DallasTemperature for unit testing
-rtc_interface.h   - RTC interface abstraction for unit testing
-timelib_interface.h - Mocks for TimeLib for unit testing
 
 */
 
@@ -58,16 +54,13 @@ timelib_interface.h - Mocks for TimeLib for unit testing
 #include "config.h"
 #include "global.h"
 #include "utils.h"
-#include "blynk_interface.h"
-#include "sensors_interface.h"
-#include "RTC_interface.h"
 
 // --- Instanciação Global (Definições) ---
 // É aqui que as variáveis são realmente criadas e alocadas na memória.
-Ticker sensorDataTicker;  //Define o sensorDataTicker para coleta de dados dos sensores em loop de tempo
-OneWire oneWire(ONE_WIRE_BUS); //Define o objeto oneWire (global, extern em global.h)
-DallasTemperature sensors(&oneWire); //Define o objeto sensors como DallasTemperature (global, extern em global.h)
-RTC_DS3231 rtc; // Define o objeto RTC (global, extern em global.h)
+Ticker sensorDataTicker; 
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
 
 // Variáveis de estado
 //Variáveis de estado para controle de arquivamento de configurações

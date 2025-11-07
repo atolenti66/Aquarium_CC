@@ -281,6 +281,17 @@ void resetTpaBufferDosingFlow() {
     Serial.println(F("Fluxo de Dosagem de Buffer resetado."));
 }
 
+void updateBufferBlynk() { // Atualiza o Blynk com o volume de buffer dosado
+    if (Blynk.connected()) {
+        Blynk.virtualWrite(VPIN_RAN_BUFFER_VOLUME, ranBufferVolumeML);
+    }
+}
+
+void updateRepositionBlynk() {   // Atualiza o Blynk com o volume de reposição
+    if (Blynk.connected()) {
+        Blynk.virtualWrite(VPIN_REPOSITION_VOLUME_L, volumeToRepositionLiters);
+    }
+}
 
 // 5.--- HANDLERS BLYNK PARA PERSISTÊNCIA E SINCRONIZAÇÃO ---
 
@@ -398,7 +409,7 @@ BLYNK_WRITE(VPIN_RAN_BUFFER_VOLUME) {
     int newVolume = param.asInt();
 
     // Validação de intervalo (0-999)
-    if (newVolume >= BUFFER_VOLUME_MIN && newVolume <= BUFFER_VOLUME_MAX) {
+    if (newVolume >= MIN_BUFFER_VOLUME_LITERS && newVolume <= MAX_BUFFER_VOLUME_LITERS) {
         if (ranBufferVolumeML != newVolume) {
             ranBufferVolumeML = newVolume;
             configIsDirty = true; // Sinaliza que a configuração precisa ser salva
@@ -447,3 +458,4 @@ void setupTpaManager() {
 
 
 }
+

@@ -132,6 +132,43 @@ void handleUpTap(Button2& btn) {
         }
         Serial.print(F("Botao UP: Valor ajustado. Campo: ")); Serial.println(page1EditMode);
     }
+    else if (currentPage == 2) {
+        if (page2EditMode == 1) {
+            // 1. Incrementa o volume de reposição
+            volumeToRepositionLiters += VOLUME_REPOSITION_STEP_LITERS;
+            
+            // 2. Limite superior
+            if (volumeToRepositionLiters > MAX_REPOSITION_VOLUME_LITERS) {
+                volumeToRepositionLiters = MAX_REPOSITION_VOLUME_LITERS;
+            }
+            
+            // 3. Atualiza o Blynk (feedback imediato)
+            updateBufferBlynk();
+            
+            Serial.print(F("Botao UP CURTO: Volume Reposicao +0.1 L -> "));
+            Serial.print(volumeToRepositionLiters, 2);
+            Serial.println(F(" L."));
+        }
+    }
+    
+    else if (currentPage == 3) {
+        if (page3EditMode == 1) {
+            // 1. Incrementa o volume de buffer
+            bufferVolumeLiters += VOLUME_BUFFER_STEP_LITERS;
+            
+            // 2. Limite superior
+            if (bufferVolumeLiters > MAX_BUFFER_VOLUME_LITERS) {
+                bufferVolumeLiters = MAX_BUFFER_VOLUME_LITERS;
+            }
+            
+            // 3. Atualiza o Blynk (feedback imediato)
+            updateBufferBlynk();
+            
+            Serial.print(F("Botao UP CURTO: Volume Buffer +0.1 L -> "));
+            Serial.print(bufferVolumeLiters, 2);
+            Serial.println(F(" L."));
+        }
+    }
 }
 
 void handleDownTap(Button2& btn) {
@@ -152,6 +189,42 @@ void handleDownTap(Button2& btn) {
                 break;
         }
         Serial.print(F("Botao DOWN: Valor ajustado. Campo: ")); Serial.println(page1EditMode);
+    }
+    else if (currentPage == 2) {
+        if (page2EditMode == 1) {
+            // 1. Decrementa o volume de reposição
+            volumeToRepositionLiters -= VOLUME_REPOSITION_STEP_LITERS;
+            
+            // 2. Limite inferior
+            if (volumeToRepositionLiters < 0.0f) {
+                volumeToRepositionLiters = 0.0f;
+            }
+
+            // 3. Atualiza o Blynk (feedback imediato)
+            //updateRepositionBlynk();
+            
+            Serial.print(F("Botao DOWN CURTO: Volume Reposicao -0.1 L -> "));
+            Serial.print(volumeToRepositionLiters, 2);
+            Serial.println(F(" L."));
+        }
+    }
+    else if (currentPage == 3) {
+        if (page3EditMode == 1) {
+            // 1. Decrementa o volume de buffer
+            bufferVolumeLiters -= VOLUME_BUFFER_STEP_LITERS;
+            
+            // 2. Limite inferior
+            if (bufferVolumeLiters < 0.0f) {
+                bufferVolumeLiters = 0.0f;
+            }
+
+            // 3. Atualiza o Blynk (feedback imediato)
+            updateBufferBlynk();
+            
+            Serial.print(F("Botao DOWN CURTO: Volume Buffer -0.1 L -> "));
+            Serial.print(bufferVolumeLiters, 2);
+            Serial.println(F(" L."));
+        }
     }
 }
 

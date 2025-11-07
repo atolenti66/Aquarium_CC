@@ -55,10 +55,6 @@ tpa_reposition    - Control return of water volume
 #include "utils.h"
 
 
-// Protótipos das funções que serão definidas aqui:
-float readPH();
-void handlePhCalibration(int buttonState);
-
 // --- 1. FUNÇÃO DE LEITURA E CONVERSÃO DE PH ---
 // Esta função faz a leitura bruta e aplica a conversão para pH.
 // Nota: O ponto neutro (pH 7.0) é geralmente 1500mV. O A0 do ESP32 tem Vref 3.3V.

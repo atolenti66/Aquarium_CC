@@ -202,7 +202,6 @@ void runRanRefillLoop() {
         // Nada a fazer
         return;
     }
-
     // 1. Monitorar o Sensor de Nível a cada loop
     ranLevelFull = readRanLevelSensor();
     ranLevelPercent = ranLevelFull ? 100 : 0;

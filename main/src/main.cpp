@@ -92,7 +92,7 @@ int page2EditMode = 0; // Rastreia o modo de edicao da Pagina 2 [TPA: RAN Repori
 int page3EditMode = 0; // Rastreia o modo de edicao da Pagina 3 [TPA: Buffer to RAN] (0=Visualizar, 1=Editar Volume)
 
 // Variáveis de estado - RAN Buffer
-int ranBufferVolumeML =0; //Volue de Buffer a ser adicionado em ml (0-999)
+int ranBufferVolumeML = 0; //Volue de Buffer a ser adicionado em ml (0-999)
 BufferDosingState tpaBufferCurrentState = TPA_BUFFER_IDLE;
 unsigned long bufferPreviousMillis = 0;
 unsigned long bufferDosingDurationMs = 0;

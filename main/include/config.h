@@ -139,6 +139,9 @@ const float PH_MAX_LIMIT = 7.8;   // Limite máximo de pH para alerta (Alcalino)
 
 // Constantes - hardware_manager
 const float VOLUME_STEP = 0.1; // Ajuste de 100mL
+#define VOLUME_REPOSITION_STEP_LITERS 0.1f
+#define MAX_REPOSITION_VOLUME_LITERS 6.0f
+#define VOLUME_BUFFER_STEP_LITERS 0.1f
 
 //Constantes - Módulo 3 (persistência de dados)
 #define CONFIG_FILE_PATH "/config.json"
@@ -151,5 +154,5 @@ const unsigned long SAFETY_PAUSE_MS = 5000; // Constantes de Tempo - 5 segundos 
 
 // --- Constantes - Módulo 5.4 (Buffer) ---
 #define TPA_BUFFER_PAGE_INDEX 3    // Índice da página de configuração de Buffer no OLED (Page 3)
-#define BUFFER_VOLUME_MIN 0
-#define BUFFER_VOLUME_MAX 999
+#define MIN_BUFFER_VOLUME_LITERS 0
+#define MAX_BUFFER_VOLUME_LITERS 999

@@ -50,7 +50,7 @@ tpa_reposition    - Control return of water volume
 #include <BlynkSimpleEsp32.h>     // Mantemos o Blynk, mas só para comunicação IoT. Utilizada em todos os módulos
 #include <OneWire.h>              // Usada em sensors.ino
 #include <DallasTemperature.h>    // Usada em sensors.ino
-//#include <DS3232RTC>              // RTC DS3232 Lib from Jack Christensen
+#include <DS3232RTC.h>              // RTC DS3232 Lib from Jack Christensen
 #include <RTClib.h>               // Utilizada para comunicação com módulo RTC. Principalmente utilizada em rtc_time.ino
 #include <Ticker.h>               // Utilizada para efetuar o schedule de funções de coletas de dados. Utilizada em main.ino
 #include <time.h>                 // Adicione esta biblioteca para o NTP. Utilizada em rtc_time.ino
@@ -173,7 +173,11 @@ enum BufferDosingState {
     TPA_BUFFER_DOSING,                   // Bomba ligada, dosando
     TPA_BUFFER_FINISHED                  // Dosagem concluída
 };
-extern BufferDosingState tpaBufferCurrentState; // **NOVO** Estado atual do M5.4
+extern BufferDosingState tpaBufferCurrentState; // Estado atual do M5.4
+extern int ranBufferVolumeML;              // Volume de buffer a ser dosado (mL, 0-999)
+extern unsigned long bufferPreviousMillis;    // Tempo de início da dosagem
+extern unsigned long bufferDosingDurationMs;  // Duração total da dosagem em ms
+extern float bufferVolumeLiters;          // Volume de buffer em Litros
 // --- (Aqui entrarão as variáveis do Módulo 2: pH, etc.) ---
 // extern float phValue;
 // extern bool phCalibrationMode;

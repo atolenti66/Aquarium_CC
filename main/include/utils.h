@@ -44,97 +44,146 @@ tpa_reposition    - Control return of water volume
 
 #pragma once // Garante que este arquivo seja incluído apenas uma vez por unidade de compilação
 
-// --- Protótipo da Função de Log (Definida em main.ino) ---
+// -----------------------------------------------------------------
+// --- main - Protótipos de Funções 
+// -----------------------------------------------------------------
 void sendSensorData();            // Rotina do Ticker
-void logSystemEvent(const char* category, const char* message);
+void logSystemEvent(const char* category, const char* message); // Função de log para eventos do sistema
+// -----------------------------------------------------------------
 
+
+// -----------------------------------------------------------------
+// --- rtc_time - Protótipos de Funções 
+// -----------------------------------------------------------------
 // --- Protótipos de Funções RTC/Tempo (Definidas em rtc_time.ino) ---
-DateTime getDateTimeNow();
-String getCurrentTimeString();
-void setupRTC();
-void checkRtcStatus();
-void syncRtcFromNtp(time_t ntpTime);
+DateTime getDateTimeNow();           // Obtém a hora atual como objeto DateTime
+String getCurrentTimeString();       // Obtém a hora atual como String formatada
+time_t getRtcTime();                 // Obtém o tempo do RTC como time_t
+void setupRTC();                     // Configura o RTC DS3231
+void checkRtcStatus();               // Verifica o status do RTC (OSF)
+void syncRtcFromNtp(time_t ntpTime); // Sincroniza o RTC com a hora NTP
+// -----------------------------------------------------------------
 
-// --- Protótipos de Funções Sensores (Definidas em sensors.ino) ---
-float readTemperature();
-void checkTempAlert(float tempC);
 
+// -----------------------------------------------------------------
+// --- sensors - Protótipos de Funções 
+// -----------------------------------------------------------------
+float readTemperature();     // Leitura do sensor de temperatura DS18B20
+void checkTempAlert(float tempC); // Verifica condições de alerta de temperatura
+void resetCriticalAlerts();  // Reseta alertas críticos (pH, Temp)
+void resetRtcOsfAlert();     // Reseta alerta OSF do RTC
+void resetSensorData();      // Reseta dados dos sensores (pH, Temp)
+// -----------------------------------------------------------------
+
+
+// -----------------------------------------------------------------
+// --- ph_sensor - Protótipos de Funções 
+// -----------------------------------------------------------------
 // --- Protótipos de Funções pH (Definidas em ph_sensor.ino) ---
-float readPH();
-void checkPhAlert(float currentPh);
+float readPH();                     // Lê e converte o valor do pH
 void executePhCalibration();  // Faz a calibração do sensor de pH
-void resetSensorData();  //Reset de Temperatura e pH para zero
+void checkPhAlert(float currentPh); // Verifica condições de alerta de pH
+// -----------------------------------------------------------------
 
-// --- Protótipos de Funções de Configuração/Persistência (Definidas em config_manager.ino) ---
-void setupConfigManager();
-void loadConfig();
-void saveConfig();
-void checkConfigSave();
 
-// --- Protótipos de Funções Display OLED (Definidas em display_manager.ino) ---
+// -----------------------------------------------------------------
+// --- config_manager - Protótipos de Funções 
+// -----------------------------------------------------------------
+void setupConfigManager();  // --- SETUP DO GERENCIADOR DE CONFIGURAÇÃO ---
+void saveConfig();         // --- SALVA CONFIGURAÇÕES NO LITTLEFS ---
+void loadConfig();          // --- CARREGA CONFIGURAÇÕES DO LITTLEFS ---
+void checkConfigSave();    // --- VERIFICA SE AS CONFIGURAÇÕES PRECISAM SER SALVAS ---
+// -----------------------------------------------------------------
+
+
+// -----------------------------------------------------------------
+// --- display_manager - Protótipos de Funções 
+// -----------------------------------------------------------------
 void setupDisplay();            // --- SETUP DO DISPLAY ---
-void drawDashboard();           // --- DESENHO: DASHBOARD (Página 0) ---
-void drawTpaExtractionPage();   // --- DESENHO: TPA EXTRAÇÃO (Página 1) ---
-void drawTpaRepositionPage();   // --- DESENHO: TPA REPOSIÇÃO (Página 2) ---
-void drawBufferInjectionPage(); // --- DESENHO: INJEÇÃO BUFFER (Página 3) ---
-void drawCustomDashboardPage(); // --- DESENHO: CUSTOM DASH (Página 4) ---
 void updateDisplay();           // --- FUNÇÃO CENTRAL DE ATUALIZAÇÃO ---
+void renderPage0Dashboard();    // --- Para renderizar a Dashboard principal
 void renderPage1TpaSchedule();  // --- Para programação de schedule como falback de TPA
-void updateRanLevelDisplay(); // Atualiza o percentual de nível no Blynk e Display
-
-// --- Protótipos de Funções para ação com botões físicos (Definidas em hardware_manager.ino) ---
-   
-void resetCriticalAlerts();     // Botão para resetar alertas criticos (PH, TEMP)
-void resetRtcOsfAlert();        // Botão para resetar alertas criticos (PH, TEMP)
-void executePhCalibration();    // Botão/Menu para acionar a calibração
-void executeTpaExtraction();    //Botão para execução de TPA
-void calculateTpaVolume();      //Para cálculo de volume de TPA
-
-// --- FUNÇÕES DE NAVEGAÇÃO E EDIÇÃO (CALLBACKS DO Button2) ---
-void handleOledPageTap(Button2& btn);
-void handleOledPageLongPress(Button2& btn);
-void handleUpTap(Button2& btn);
-void handleDownTap(Button2& btn);
-void handleAlertResetTap(Button2& btn);
-void handleAlertResetLongPress(Button2& btn);
-void handleRtcResetTap(Button2& btn);
-void handlePhCalLongPress(Button2& btn);
-void handleServiceModeLongPress(Button2& btn);
-void runHardwareManagerLoop();
-void setupHardwareButtons(); // Define os botões
+void renderPage2TpaReposition(); // --- Para renderizar a página de reposição de TPA
+void renderPage3TpaBuffer();     // --- Para renderizar a página de injeção de buffer
+// -----------------------------------------------------------------
 
 
-// --- Protótipos de Funções para ação com atuadores (Definidas em actuators_manager.ino) ---
+// -----------------------------------------------------------------
+// --- hardware_manager - Protótipos de Funções 
+// -----------------------------------------------------------------
+void handleOledPageTap(Button2& btn);          // Alterna páginas do OLED ou entra em modo de edição
+void handleOledPageLongPress(Button2& btn);    // Retorna à página 0 (Dashboard)
+void handleUpTap(Button2& btn);                // Incrementa valores no modo de edição
+void handleDownTap(Button2& btn);              // Decrementa valores no modo de edição
+void handleAlertResetTap(Button2& btn);        // Reseta alertas críticos (curto)
+void handleAlertResetLongPress(Button2& btn);  // Reseta valores min/max dos sensores (longo)
+void handleRtcResetTap(Button2& btn);          // Reseta alerta OSF do RTC (curto)
+void handlePhCalLongPress(Button2& btn);       // Inicia calibração de pH (longo)
+void handleServiceModeLongPress(Button2& btn); // Alterna modo de serviço (longo)
+void runHardwareManagerLoop();                 // Loop principal para gerenciar botões físicos
+void setupHardwareButtons();                   // Define os botões
+// -----------------------------------------------------------------
+
+
+// -----------------------------------------------------------------
+// --- actuators_manager - Protótipos de Funções 
+// -----------------------------------------------------------------
 void setupActuators();                   // --- SETUP DOS ATUADORES ---
+unsigned long calculatePumpDuration(float volumeLiters); // Calcula duração da bomba para um volume específico
 void setExtractionPumpState(bool state); // --- CONTROLE DA BOMBA DE EXTRACAO ---
-unsigned long calculatePumpDuration(float volumeLiters); // --- CÁLCULO DA DURAÇÃO DA BOMBA ---
 void executeTpaExtraction();             // --- ATUADOR: EXECUTA O CICLO DE EXTRACAO TPA ---
-
-// --- Protótipos de Funções para ação com atuadores (Definidas em tpa_manager.ino) ---
-void calculateTpaVolume();                               // --- LÓGICA DE CÁLCULO DE VOLUME ---
-unsigned long calculatePumpDuration(float volumeLiters); // Calcula a duração de acionamento da bomba
-void executeTpaExtraction();                             // Executa a extração no TPA
-void saveTpaConfig(StaticJsonDocument<1024>& doc);       // Salva as configurações no SPIFFS/LittleFS
-void checkLocalSchedule();                               // Para verificar o schedule local
-
-// --- Protótipos de Funções para ação com atuadores (Definidas em tpa_reposition.ino) ---
-void startTpaRepositionFlow();   // Inicia o processo de reposição
-void runTpaRepositionLoop();     // Executa a reposição até os limites estabelecidos.
-bool isTpaRepositionFinished();  // Averigua se a reposição está encerrada
-void resetTpaRepositionFlow();   // Reset do estado do fluxo de reposição
-extern unsigned long calculatePumpDuration(float volumeLiters);
-
-// --- Protótipos de Funções para Módulo 5.3 (Enchimento do RAN) ---
-void setupRanRefill();                   // Inicializa pinos e estado do RAN (chamado em setupActuators)
+bool readRanLevelSensor();               // Função auxiliar para ler o sensor
+void setRANSolenoidState(bool state);    // Função auxiliar para controlar a válvula
 void startRanRefillFlow();               // Inicia o processo de enchimento do RAN
 void runRanRefillLoop();                 // Máquina de estados principal do enchimento
 bool isRanRefillFinished();              // Verifica se o enchimento está concluído
 void resetRanRefillFlow();               // Reseta o estado do enchimento
-bool readRanLevelSensor();               // Função auxiliar para ler o sensor
-void setRANSolenoidState(bool state);    // Função auxiliar para controlar a válvula
+void resetRanRefillFlow();               // Reseta o estado do enchimento
 void checkRanRefillAlert();              // Verifica se houve falha no enchimento
+void updateRanLevelDisplay();              // Atualiza o display e Blynk com o nível do RAN
+void setBufferPumpState(bool state);     // Controle da bomba de buffer (M5.4)
+// -----------------------------------------------------------------
+
+
+// -----------------------------------------------------------------
+// --- tpa_manager - Protótipos de Funções 
+// -----------------------------------------------------------------
+void calculateTpaVolume();     // Lógica de cálculo de volume TPA
+void runTpaManagerLoop();      // Coordenação do Loop TPA Master
+void checkLocalSchedule();     // Verifica agendamento local de TPA
+void startTpaBufferDosing();   // Inicia o processo de dosagem de buffer
+void runTpaBufferDosingLoop(); // Executa a dosagem de buffer
+bool isTpaBufferDosingFinished(); // Verifica se a dosagem de buffer está concluída
+void resetTpaBufferDosingFlow();  // Reseta o estado da dosagem de buffer
+void updateBufferBlynk();        // Atualiza o Blynk com o volume de buffer dosado
+void setupTpaManager();        // Inicializa variáveis e estados do TPA Manager
+void uupdateRepositionBlynk(); // Atualiza o Blynk com o volume de reposição
+// -----------------------------------------------------------------
+
+
+// -----------------------------------------------------------------
+// --- tpa_reposition - Protótipos de Funções 
+// -----------------------------------------------------------------
+void startTpaRepositionFlow();   // Inicia o processo de reposição
+void runTpaRepositionLoop();     // Executa a reposição até os limites estabelecidos.
+bool isTpaRepositionFinished();  // Averigua se a reposição está encerrada
+void resetTpaRepositionFlow();   // Reset do estado do fluxo de reposição
+extern unsigned long calculatePumpDuration(float volumeLiters); // Calcula duração da bomba para um volume específico
+// -----------------------------------------------------------------
+
+
+// --- Protótipos de Funções para Módulo 5.4 (Dosagem de Buffer) ---
+void startTpaBufferDosing();             // Inicia o processo de dosagem de buffer
+void runTpaBufferDosingLoop();           // Máquina de estados principal da dosagem
+bool isTpaBufferDosingFinished();        // Verifica se a dosagem está concluída
+void resetTpaBufferDosingFlow();         // Reseta o estado da dosagem
+void setBufferPumpState(bool state);     // Função auxiliar para controlar a bomba de buffer
+
+
 
 // --- Protótipos das Funções (Para o compilador) ---
+
+
 
 
 

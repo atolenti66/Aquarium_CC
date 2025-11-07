@@ -49,8 +49,6 @@ tpa_reposition    - Control return of water volume
 #include "global.h"
 #include "utils.h"
 
-// Protótipos de Funções que precisamos chamar (em tpa_manager.ino)
-void calculateTpaVolume(); 
 
 // --- SETUP: INICIALIZA LITTLEFS E CARREGA CONFIG ---
 // Esta função DEVE ser chamada no main.ino setup()

@@ -96,6 +96,7 @@ int ranBufferVolumeML = 0; //Volue de Buffer a ser adicionado em ml (0-999)
 BufferDosingState tpaBufferCurrentState = TPA_BUFFER_IDLE;
 unsigned long bufferPreviousMillis = 0;
 unsigned long bufferDosingDurationMs = 0;
+float bufferVolumeLiters = 0;
 
 // --- Definições Globais TPA (Módulo 5.1 tpa_manager) ---
 float aquariumTotalVolume = 96.0f; // Volume Padrao de 96 Litros
@@ -206,7 +207,7 @@ void sendSensorData() {
   // 1. LÓGICA RTC/BATERIA
   if (rtc_ok && rtc_osf_flag && !rtcOsfAlertSent) {
       if (Blynk.connected()) {
-          Blynk.logEvent("rtc_battery_low", F("Bateria do RTC falhou! Usando tempo da Internet."));
+        logSystemEvent("warning", "Bateria do RTC falhou! Usando tempo da Internet.");        
       }
       rtcOsfAlertSent = true;
   }
@@ -222,7 +223,7 @@ void sendSensorData() {
     if (!phCalibrationMode) { // Não leia/envie dados se estiver no meio da calibração
         float currentPh = readPH();
         Blynk.virtualWrite(VPIN_PH_VAL, currentPh);
-        // Aqui entraria a função checkPhAlert(currentPh) se fosse implementada
+        checkPhAlert(float currentPh);
     }
 
   // 4. LEITURA DE TEMPO

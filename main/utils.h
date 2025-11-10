@@ -138,7 +138,6 @@ void startRanRefillFlow();               // Inicia o processo de enchimento do R
 void runRanRefillLoop();                 // Máquina de estados principal do enchimento
 bool isRanRefillFinished();              // Verifica se o enchimento está concluído
 void resetRanRefillFlow();               // Reseta o estado do enchimento
-void resetRanRefillFlow();               // Reseta o estado do enchimento
 void checkRanRefillAlert();              // Verifica se houve falha no enchimento
 void updateRanLevelDisplay();              // Atualiza o display e Blynk com o nível do RAN
 void setBufferPumpState(bool state);     // Controle da bomba de buffer (M5.4)

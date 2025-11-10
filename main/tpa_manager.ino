@@ -41,7 +41,6 @@ actuators_manager - Deal with all pump e actuator hardware in the system
 tpa_manager       - (this file) Coordinate the partial water change (in portuguese TPA ou troca parcial de água)
 tpa_reposition    - Control return of water volume
 */
-#include <Arduino.h>  // Para manter compatibilidade com PlatformIO
 #include "config.h"
 #include "global.h"
 #include "utils.h"

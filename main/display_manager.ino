@@ -45,7 +45,6 @@ tpa_reposition    - Control return of water volume
 */
 
 // display_manager.ino
-#include <Arduino.h>  // Para manter compatibilidade com PlatformIO
 #include "config.h"
 #include "global.h"
 #include "utils.h"

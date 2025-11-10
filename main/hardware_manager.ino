@@ -45,7 +45,6 @@ tpa_manager       - Coordinate the partial water change (in portuguese TPA ou tr
 tpa_reposition    - Control return of water volume
 
 */
-#include <Arduino.h>  // Para manter compatibilidade com PlatformIO
 #include "config.h"
 #include "global.h"
 #include "utils.h"
@@ -132,6 +131,7 @@ void handleUpTap(Button2& btn) {
         }
         Serial.print(F("Botao UP: Valor ajustado. Campo: ")); Serial.println(page1EditMode);
     }
+    
     else if (currentPage == 2) {
         if (page2EditMode == 1) {
             // 1. Incrementa o volume de reposição

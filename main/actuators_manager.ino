@@ -42,28 +42,35 @@ tpa_manager       - Coordinate the partial water change (in portuguese TPA ou tr
 tpa_reposition    - Control return of water volume
 
 */
-#include <Arduino.h>  // Para manter compatibilidade com PlatformIO
 #include "config.h"
 #include "global.h"
 #include "utils.h"
 
 // --- SETUP DOS ATUADORES ---
 void setupActuators() {
-    // Configura o pino da bomba de extracao como OUTPUT
+    // Configura o pino da bomba de extracao como OUTPUT. Procedimento TPA: Extração M5.1
     pinMode(TPA_EXTRACTION_PUMP_PIN, OUTPUT);
     digitalWrite(TPA_EXTRACTION_PUMP_PIN, LOW); // Garante que a bomba comeca desligada
     
     Serial.print(F("Pino da bomba de Extracao configurado: "));
     Serial.println(TPA_EXTRACTION_PUMP_PIN);
 
-    // --- SETUP MÓDULO 5.3: ENCHIMENTO DO RAN ---
+    // Configura o pino da bomba de reposição como OUTPUT. Procedimento TPA: Reposition M5.2
+    pinMode(TPA_REPOSITION_PUMP_PIN, OUTPUT);
+    digitalWrite(TPA_REPOSITION_PUMP_PIN, LOW); // Garante que a bomba comeca desligada
+    
+    Serial.print(F("Pino da bomba de Reposicao configurado: "));
+    Serial.println(TPA_REPOSITION_PUMP_PIN);
+
+
+    // --- SETUP MÓDULO 5.3: ENCHIMENTO DO RAN ---. Procedimento TPA: RAN Refill M5.3
     pinMode(RAN_SOLENOID_VALVE_PIN, OUTPUT);
     digitalWrite(RAN_SOLENOID_VALVE_PIN, RELAY_OFF); // Solenoide NC: OFF = Fechado
     
-    // O sensor de nível do RAN é uma entrada simples
+    // O sensor de nível do RAN é uma entrada simples. Procedimento TPA: RAN Refill M5.3 (fallback)
     pinMode(RAN_LEVEL_SENSOR_PIN, INPUT_PULLUP); // Assumindo sensor de boia com pull-up
 
-    // Configuração da Bomba de Buffer (M5.4) - NOVO
+    // Configuração da Bomba de Buffer (M5.4) - Procedimento TPA: Buffer  M5.4
     pinMode(TPA_BUFFER_PUMP_PIN, OUTPUT);
     digitalWrite(TPA_BUFFER_PUMP_PIN, RELAY_OFF); // Começa desligada
     
@@ -91,11 +98,12 @@ void setExtractionPumpState(bool state) {
     // Sincronizar status com Blynk (usando LED Widget)
     if (Blynk.connected()) {
         Blynk.virtualWrite(VPIN_TPA_EXTRACTION_PUMP, state ? 255 : 0); 
+            // Log de evento
+        String logMsg = state ? F("Bomba de Extracao ATIVADA.") : F("Bomba de Extracao DESLIGADA.");
+        logSystemEvent(state ? "warning" : "info", logMsg.c_str());
     }
 
-    // Log de evento
-    String logMsg = state ? F("Bomba de Extracao ATIVADA.") : F("Bomba de Extracao DESLIGADA.");
-    logSystemEvent(state ? "warning" : "info", logMsg.c_str());
+
     updateDisplay();
 }
 
@@ -146,7 +154,7 @@ void executeTpaExtraction() {
     // 3. Desligar a bomba
     setExtractionPumpState(false);
     
-    logSystemEvent("success", "TPA Extracao concluida.");
+    logSystemEvent("info", "TPA Extracao concluida.");
     // Inicia a reposicao (será implementada no Modulo 5.2)
 }
 
@@ -185,6 +193,7 @@ void startRanRefillFlow() {
 
     if (ranLevelFull) {
         Serial.println(F("RAN ja esta cheio. Pulando enchimento (M5.3)."));
+        logSystemEvent("info", "RAN ja esta cheio. Pulando enchimento (M5.3).");
         ranRefillCurrentState = RAN_REFILL_FINISHED;
         return;
     }
@@ -256,6 +265,7 @@ void resetRanRefillFlow() {
     setRANSolenoidState(false); // Garantir que a válvula esteja FECHADA
     ranRefillAlertSent = false;
     Serial.println(F("Fluxo de Enchimento do RAN resetado."));
+    logSystemEvent("info", "Fluxo de Enchimento do RAN resetado.");
 }
 
 void checkRanRefillAlert() {
@@ -299,4 +309,5 @@ void setBufferPumpState(bool state) {
     digitalWrite(TPA_BUFFER_PUMP_PIN, state ? RELAY_ON : RELAY_OFF);
     Serial.print(F("Bomba de Buffer: "));
     Serial.println(state ? F("LIGADA") : F("DESLIGADA"));
+    logSystemEvent("info", "Bomba Buffer alterado estado.");
 }

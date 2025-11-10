@@ -46,7 +46,6 @@ tpa_manager       - Coordinate the partial water change (in portuguese TPA ou tr
 tpa_reposition    - Control return of water volume
 
 */
-#include <Arduino.h>  // Para manter compatibilidade com PlatformIO
 #include "config.h"
 #include "global.h"
 #include "utils.h"

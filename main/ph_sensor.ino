@@ -49,7 +49,6 @@ tpa_reposition    - Control return of water volume
 */
 
 // ph_sensor.ino
-#include <Arduino.h>  // Para manter compatibilidade com PlatformIO
 #include "config.h"
 #include "global.h"
 #include "utils.h"

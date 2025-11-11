@@ -1,8 +1,8 @@
 # Aquarium Command & Control (ACC)
 
-> Um sistema de automação e monitoramento para aquários de água salgada (ou doce) baseado em ESP32, PlatformIO e Blynk.
+> Um sistema de automação e monitoramento para aquários de água salgada (ou doce) baseado em ESP32, **VS Code (com extensão Arduino)** e Blynk.
 
-Este projeto tem como objetivo principal automatizar tarefas críticas de manutenção de um aquário, com foco especial na **Troca Parcial de Água (TPA)**. O sistema é totalmente modular, escrito em C++ e projetado para ser gerenciado via VS Code com extensão Arduino.
+Este projeto tem como objetivo principal automatizar tarefas críticas de manutenção de um aquário, com foco especial na **Troca Parcial de Água (TPA)**. O sistema é totalmente modular, escrito em C++ e projetado para ser gerenciado via VS Code com a extensão Arduino.
 
 ---
 
@@ -49,9 +49,9 @@ Este projeto tem como objetivo principal automatizar tarefas críticas de manute
 
 ## 📚 Software e Bibliotecas
 
-Este projeto é desenvolvido utilizando **VS Code** com a extensão **Arduino**.
+Este projeto é desenvolvido utilizando **VS Code** com a extensão **[Arduino for VS Code](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.vscode-arduino)** (Arduino Community Edition).
 
-As principais bibliotecas (gerenciadas via `arduino.json`) incluem:
+As principais bibliotecas são gerenciadas através do **Gerenciador de Bibliotecas** da própria extensão Arduino (acessado via `Ctrl+Shift+P` > "Arduino: Library Manager") e incluem:
 
 * `Blynk` (para conectividade IoT)
 * `RTClib` (para o DS3231)
@@ -68,7 +68,8 @@ As principais bibliotecas (gerenciadas via `arduino.json`) incluem:
 O código é 100% modular para facilitar a manutenção e a depuração. Cada "responsabilidade" do sistema está em seu próprio par de arquivos `.cpp` / `.h`.
 
 * `main.cpp`: Ponto de entrada, `setup()` e `loop()` principal.
-* `config.h`: **Arquivo principal de configuração.** Define pinos, senhas, chaves de API, etc.
+* `config.h`: **Arquivo principal de configuração.** Define pinos, constantes do aquário, etc.
+* `secrets.h`: (**Recomendado/Ignorado pelo Git**) Armazena senhas de WiFi e tokens de API.
 * `global.h`: Declaração de variáveis globais (`extern`) e `enum`s.
 * `utils.h`: Protótipos de funções de utilidade (ex: `logSystemEvent`).
 * `config_manager.cpp`: Gerencia a leitura e escrita de JSON no LittleFS.
@@ -86,16 +87,14 @@ O código é 100% modular para facilitar a manutenção e a depuração. Cada "r
 ## ⚙️ Configuração
 
 1.  Clone este repositório.
-2.  Abra o projeto como um projeto PlatformIO no VS Code.
-3.  **Abra o arquivo `config.h`.**
-4.  Preencha suas credenciais de **WiFi** (SSID e Senha).
-5.  Preencha seu **Auth Token do Blynk**.
-6.  Ajuste a **mapeamento de pinos** do ESP32 de acordo com o seu hardware.
-7.  Ajuste as constantes do aquário (ex: `AQUARIUM_TOTAL_VOLUME`).
-8.  Compile e faça o upload para o seu ESP32.
-
----
-
-## ✍️ Autor
-
-* **Alberto Tolentino**
+2.  Abra a pasta do projeto no VS Code (`Arquivo > Abrir Pasta...`).
+3.  Certifique-se de ter a extensão **"Arduino for VS Code"** instalada e o **Arduino IDE** (preferencialmente 2.x) instalado (a extensão o utiliza nos bastidores).
+4.  No canto inferior direito da barra de status do VS Code, configure a extensão:
+    * **Arquivo Principal:** Selecione `main.cpp`.
+    * **Placa:** Selecione sua placa (ex: `ESP32 Dev Module`).
+    * **Porta:** Selecione a porta COM onde o ESP32 está conectado.
+5.  Use o Gerenciador de Bibliotecas (`Ctrl+Shift+P` > "Arduino: Library Manager") para instalar as bibliotecas listadas acima.
+6.  **Crie o arquivo `secrets.h`** (baseado no `secrets.h.example`, se houver) na mesma pasta do `config.h`.
+7.  Preencha o `secrets.h` com suas credenciais de **WiFi** (SSID e Senha) e seu **Auth Token do Blynk**.
+8.  Ajuste o arquivo **`config.h`** com o mapeamento de pinos do seu hardware e as constantes do aquário (ex: `AQUARIUM_TOTAL_VOLUME`).
+9.  Use os ícones no canto superior direito do VS Code para **Verificar** (compilar) e **Fazer Upload**.

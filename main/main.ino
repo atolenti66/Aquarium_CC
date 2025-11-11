@@ -223,7 +223,7 @@ void sendSensorData() {
     if (!phCalibrationMode) { // Não leia/envie dados se estiver no meio da calibração
         float currentPh = readPH();
         Blynk.virtualWrite(VPIN_PH_VAL, currentPh);
-        checkPhAlert(float currentPh);
+        checkPhAlert(currentPh);
     }
 
   // 4. LEITURA DE TEMPO

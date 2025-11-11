@@ -2,7 +2,7 @@
 
 > Um sistema de automação e monitoramento para aquários de água salgada (ou doce) baseado em ESP32, PlatformIO e Blynk.
 
-Este projeto tem como objetivo principal automatizar tarefas críticas de manutenção de um aquário, com foco especial na **Troca Parcial de Água (TPA)**. O sistema é totalmente modular, escrito em C++ e projetado para ser gerenciado via VS Code com PlatformIO.
+Este projeto tem como objetivo principal automatizar tarefas críticas de manutenção de um aquário, com foco especial na **Troca Parcial de Água (TPA)**. O sistema é totalmente modular, escrito em C++ e projetado para ser gerenciado via VS Code com extensão Arduino.
 
 ---
 
@@ -49,9 +49,9 @@ Este projeto tem como objetivo principal automatizar tarefas críticas de manute
 
 ## 📚 Software e Bibliotecas
 
-Este projeto é desenvolvido utilizando **VS Code** com a extensão **PlatformIO**.
+Este projeto é desenvolvido utilizando **VS Code** com a extensão **Arduino**.
 
-As principais bibliotecas (gerenciadas via `platformio.ini`) incluem:
+As principais bibliotecas (gerenciadas via `arduino.json`) incluem:
 
 * `Blynk` (para conectividade IoT)
 * `RTClib` (para o DS3231)
